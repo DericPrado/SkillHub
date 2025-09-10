@@ -59,7 +59,7 @@ namespace SkillHub.Application.Services
 
         public async Task<UpdateUserResponse> UpdateAsync(UpdateUserRequest request)
         {
-            await RequestUpdateUserValidator(request);
+            await RequestUpdateDeleteUserValidator(request.Id);
 
             var user = await _userRepository.GetByIdAsync(request.Id);
 
@@ -79,10 +79,29 @@ namespace SkillHub.Application.Services
             };
         }
 
-        private async Task RequestUpdateUserValidator(UpdateUserRequest request)
+        public async Task<DeleteUserResponse> DeleteAsync(DeleteUserRequest request)
         {
-            if (request.Id == Guid.Empty)
+            await RequestUpdateDeleteUserValidator(request.Id);
+
+            var user = await _userRepository.GetByIdAsync(request.Id);
+
+            await _userRepository.DeleteAsync(user.Id);
+            
+            return new DeleteUserResponse
+            {
+                Id = user.Id,
+                Name = user.Name,
+                Email = user.Email,
+                Message = "User successfully deleted!"
+            };
+        }
+
+        private async Task RequestUpdateDeleteUserValidator(Guid userId)
+        {
+            if (userId == Guid.Empty)
                 throw new ArgumentException("User ID is required.");
         }
+
+
     }
 }

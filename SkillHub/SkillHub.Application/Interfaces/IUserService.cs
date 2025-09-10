@@ -6,5 +6,6 @@ namespace SkillHub.Application.Interfaces
     {
         Task<RegisterUserResponse> RegisterAsync(RegisterUserRequest request);
         Task<UpdateUserResponse> UpdateAsync(UpdateUserRequest request);
+        Task<DeleteUserResponse> DeleteAsync(DeleteUserRequest request);
     }
 }
