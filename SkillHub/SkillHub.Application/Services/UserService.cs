@@ -16,19 +16,8 @@ namespace SkillHub.Application.Services
 
         public async Task<RegisterUserResponse> RegisterAsync(RegisterUserRequest request)
         {
-            if (string.IsNullOrWhiteSpace(request.Name))
-                throw new ArgumentException("Name is required.");
-
-            if (string.IsNullOrWhiteSpace(request.Email))
-                throw new ArgumentException("Email is required.");
-
-            if (string.IsNullOrWhiteSpace(request.Password) || request.Password.Length < 6)
-                throw new ArgumentException("Password must be at least 6 characters.");
-
-            var userExists = await _userRepository.ExistsByEmailAsync(request.Email);
-            if (userExists)
-                throw new InvalidOperationException("User with this email already exists.");
-
+            await RequestRegisterUserValidator(request);
+            
             var passwordHash = BCrypt.Net.BCrypt.HashPassword(request.Password);
 
             var user = new User
@@ -48,6 +37,22 @@ namespace SkillHub.Application.Services
                 Id = user.Id,
                 Email = user.Email
             };
+        }
+
+        private async Task RequestRegisterUserValidator(RegisterUserRequest request)
+        {
+            if (string.IsNullOrWhiteSpace(request.Name))
+                throw new ArgumentException("Name is required.");
+
+            if (string.IsNullOrWhiteSpace(request.Email))
+                throw new ArgumentException("Email is required.");
+
+            if (string.IsNullOrWhiteSpace(request.Password) || request.Password.Length < 6)
+                throw new ArgumentException("Password must be at least 6 characters.");
+
+            var userExists = await _userRepository.ExistsByEmailAsync(request.Email);
+            if (userExists)
+                throw new InvalidOperationException("User with this email already exists.");
         }
     }
 }
