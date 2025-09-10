@@ -6,7 +6,8 @@ namespace SkillHub.Domain.Interfaces
     {
         Task<bool> AddAsync(User user);
         Task<bool> GetByEmailAsync(string email);
-        Task<bool> GetByIdAsync(Guid id);
+        Task<User> GetByIdAsync(Guid id);
         Task<bool> ExistsByEmailAsync(string email);
+        Task<bool> UpdateAsync(User user);
     }
 }
