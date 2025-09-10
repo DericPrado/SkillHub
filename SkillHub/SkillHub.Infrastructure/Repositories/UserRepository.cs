@@ -27,16 +27,23 @@ namespace SkillHub.Infrastructure.Repositories
             return true;
         }
 
-        public async Task<bool> GetByIdAsync(Guid id)
+        public async Task<User> GetByIdAsync(Guid id)
         {
             // return await _context.Users.FindAsync(id);
-            return true;
+            return new User();
         }
 
         public async Task<bool> ExistsByEmailAsync(string email)
         {
             //return await _context.Users.AnyAsync(u => u.Email.ToLower() == email.ToLower());
             return false;
+        }
+
+        public async Task<bool> UpdateAsync(User user)
+        {
+            // _context.Users.Update(user);
+            // await _context.SaveChangesAsync();
+            return true;
         }
     }
 }
